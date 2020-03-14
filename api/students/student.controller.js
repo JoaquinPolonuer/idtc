@@ -26,7 +26,7 @@ const {
       });
     },
     getStudentByStudentId: (req, res) => {
-      const id = req.params.id_user;
+      const id = req.params.id_student;
       getStudentByStudentId(id, (err, results) => {
         if (err) {
           console.log(err);
