@@ -55,7 +55,7 @@ module.exports = {
     deleteStudent: (data, callback) => {
       console.log(data.id);
       pool.query(
-        `delete from student where id_student = ?`,
+        `delete from students where id_student = ?`,
         [data.id],
         (error, results, fields) => {
           if (error) {
