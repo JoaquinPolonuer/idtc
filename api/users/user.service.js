@@ -2,6 +2,8 @@ const pool = require("../../config/database");
 
 module.exports = {
   create: (data, callback) => {
+    let sentence = ""
+    let values = []
     pool.query(
       "insert into user_login(user, password, hierarchy) values(?,?,?)",
       [data.user, data.password, data.hierarchy],
@@ -13,9 +15,20 @@ module.exports = {
       }
       
     );
+    switch(data.hierarchy){
+      case "student":
+        sentence = "insert into students(first_name, last_name, document, profile_photo) values(?,?,?,?)";
+        values = [data.first_name, data.last_name, data.document, data.profile_photo];
+        break;
+      case "teacher" == data.hierarchy:
+        sentence = "insert into teachers(first_name, last_name, document, profile_photo) values(?,?,?,?)";
+        break;
+      default:
+        console.log("Hierarchy does not match tables")
+      }
     pool.query(
-      "insert into students(first_name, last_name, document, profile_photo) values(?,?,?,?)",
-      [data.first_name, data.last_name, data.document, data.profile_photo],
+      sentence,
+      values,
       (error, results, fields) => {
         if (error) {
           return callback(error);
