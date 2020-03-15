@@ -3,15 +3,28 @@ const pool = require("../../config/database");
 module.exports = {
   create: (data, callback) => {
     pool.query(
-      `insert into user_login(user, password, hierarchy) values(?,?,?)`,
+      "insert into user_login(user, password, hierarchy) values(?,?,?)",
       [data.user, data.password, data.hierarchy],
+      (error, results, fields) => {
+        if (error) {
+          return callback(error);
+        }
+        //return callback(null, results);
+      }
+      
+    );
+    pool.query(
+      "insert into students(first_name, last_name, document, profile_photo) values(?,?,?,?)",
+      [data.first_name, data.last_name, data.document, data.profile_photo],
       (error, results, fields) => {
         if (error) {
           return callback(error);
         }
         return callback(null, results);
       }
+      
     );
+     
   },
   getUsers: callback => {
     pool.query(
@@ -49,11 +62,11 @@ module.exports = {
       }
     );
   },
-  deleteUser: (data, callback) => {
-    console.log(data.id);
+  deleteUser: (data, callback) => { 
+    console.log(data.id_user);
     pool.query(
       `delete from user_login where id_user = ?`,
-      [data.id],
+      [data.id_user],
       (error, results, fields) => {
         if (error) {
           return callback(error);

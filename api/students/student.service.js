@@ -1,18 +1,18 @@
 const pool = require("../../config/database");
 
 module.exports = {
-    create: (data, callback) => {
-      pool.query(
-        `insert into students(first_name, last_name, document, profile_photo) values(?,?,?,?)`,
-        [data.first_name, data.last_name, data.document, data.profile_photo],
-        (error, results, fields) => {
-          if (error) {
-            return callback(error);
-          }
-          return callback(null, results);
-        }
-      );
-    },
+    // create: (data, callback) => {
+    //   pool.query(
+    //     `insert into students(first_name, last_name, document, profile_photo) values(?,?,?,?)`,
+    //     [data.first_name, data.last_name, data.document, data.profile_photo],
+    //     (error, results, fields) => {
+    //       if (error) {
+    //         return callback(error);
+    //       }
+    //       return callback(null, results);
+    //     }
+    //   );
+    // },
     getStudents: callback => {
       pool.query(
         `select * from students`,
@@ -53,10 +53,10 @@ module.exports = {
       );
     },
     deleteStudent: (data, callback) => {
-      console.log(data.id);
+      console.log(data.id_student);
       pool.query(
         `delete from students where id_student = ?`,
-        [data.id],
+        [data.id_student],
         (error, results, fields) => {
           if (error) {
             return callback(error);
@@ -66,6 +66,7 @@ module.exports = {
       );
     },
     getStudentByStudentDocument: (document, callback) => {
+
       pool.query(
         `select * from students where document = ?`,
         [document],

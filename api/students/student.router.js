@@ -10,10 +10,10 @@ const {
   const router = require("express").Router();
   const { checkToken } = require("../../auth/token_validation");
   
-  router.post("/", checkToken, createStudent);
+  //router.post("/", checkToken, createStudent);
   router.get("/", checkToken, getStudents);
   router.get("/:id_student", checkToken, getStudentByStudentId);
   router.patch("/", checkToken, updateStudent);
   router.delete("/", checkToken, deleteStudent);  
-  router.get("/", checkToken, getStudentByStudentDocument);
+  router.post("/document", checkToken, getStudentByStudentDocument);
   module.exports = router;
