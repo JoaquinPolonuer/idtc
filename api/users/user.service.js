@@ -4,17 +4,7 @@ module.exports = {
   create: (data, callback) => {
     let sentence = ""
     let values = []
-    pool.query(
-      "insert into user_login(user, password, hierarchy) values(?,?,?)",
-      [data.user, data.password, data.hierarchy],
-      (error, results, fields) => {
-        if (error) {
-          return callback(error);
-        }
-        //return callback(null, results);
-      }
-      
-    );
+    let flag = true;
     switch(data.hierarchy){
       case "student":
         sentence = "insert into students(first_name, last_name, document, profile_photo) values(?,?,?,?)";
@@ -25,18 +15,34 @@ module.exports = {
         break;
       default:
         console.log("Hierarchy does not match tables")
+        flag = false;
       }
-    pool.query(
-      sentence,
-      values,
-      (error, results, fields) => {
-        if (error) {
-          return callback(error);
-        }
-        return callback(null, results);
+      if(flag){
+        pool.query(
+          "insert into user_login(user, password, hierarchy) values(?,?,?)",
+          [data.user, data.password, data.hierarchy],
+          (error, results, fields) => {
+            if (error) {
+              return callback(error);
+            }
+            //return callback(null, results);
+          }
+          
+        );
+        
+        pool.query(
+          sentence,
+          values,
+          (error, results, fields) => {
+            if (error) {
+              return callback(error);
+            }
+            return callback(null, results);
+          }
+          
+        );
       }
-      
-    );
+    
      
   },
   getUsers: callback => {
