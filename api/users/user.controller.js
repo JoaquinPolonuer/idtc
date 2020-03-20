@@ -1,6 +1,6 @@
 const {
   create,
-  getUsersByUserId,
+  getUsersByUserDocument,
   getUsers,
   deleteUser,
   updateUser,
@@ -27,9 +27,9 @@ module.exports = {
       });
     });
   },
-  getUsersByUserId: (req, res) => {
-    const id = req.params.id_user;
-    getUsersByUserId(id, (err, results) => {
+  getUsersByUserDocument: (req, res) => {
+    const document = req.params.document;
+    getUsersByUserDocument(document, (err, results) => {
       if (err) {
         console.log(err);
         return;

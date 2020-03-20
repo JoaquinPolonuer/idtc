@@ -2,52 +2,57 @@ const pool = require("../../config/database");
 
 module.exports = {
   create: (data, callback) => {
-    let sentence = ""
-    let values = []
+    let sentence = "";
+    let values = [];
     let flag = true;
-    switch(data.hierarchy){
+    switch (data.hierarchy) {
       case "student":
-        sentence = "insert into students(first_name, last_name, profile_photo) values(?,?,?)";
-        values = [data.first_name, data.last_name, data.profile_photo];
+        sentence =
+          "insert into students(first_name, last_name, profile_photo, users_document) values(?,?,?, ?)";
+        values = [
+          data.first_name,
+          data.last_name,
+          data.profile_photo,
+          data.document
+        ];
         break;
       case "teacher" == data.hierarchy:
-        sentence = "insert into teachers(first_name, last_name, profile_photo) values(?,?,?)";
+        sentence =
+          "insert into teachers(first_name, last_name, profile_photo, users_document) values(?,?,?, ?)";
+        values = [
+          data.first_name,
+          data.last_name,
+          data.profile_photo,
+          data.document
+        ];
         break;
       default:
-        console.log("Hierarchy does not match tables")
+        console.log("Hierarchy does not match tables");
         flag = false;
-      }
-      if(flag){
-        pool.query(
-          "insert into users (user, password, hierarchy) values(?,?,?)",
-          [data.user, data.password, data.hierarchy],
-          (error, results, fields) => {
-            if (error) {
-              return callback(error);
-            }
-            //return callback(null, results);
+    }
+    if (flag) {
+      pool.query(
+        "insert into users (user, password, hierarchy, document) values(?,?,?,?)",
+        [data.user, data.password, data.hierarchy, data.document],
+        (error, results, fields) => {
+          if (error) {
+            return callback(error);
           }
-          
-        );
-        
-        pool.query(
-          sentence,
-          values,
-          (error, results, fields) => {
-            if (error) {
-              return callback(error);
-            }
-            return callback(null, results);
-          }
-          
-        );
-      }
-    
-     
+          //return callback(null, results);
+        }
+      );
+
+      pool.query(sentence, values, (error, results, fields) => {
+        if (error) {
+          return callback(error);
+        }
+        return callback(null, results);
+      });
+    }
   },
   getUsers: callback => {
     pool.query(
-      `select id_user, user, password, hierarchy from user_login`,
+      `select document, user, password, hierarchy from users`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -57,10 +62,10 @@ module.exports = {
       }
     );
   },
-  getUsersByUserId: (id, callback) => {
+  getUsersByUserDocument: (document, callback) => {
     pool.query(
-      `select id_user, user, password, hierarchy from user_login where id_user = ?`,
-      [id],
+      `select document, user, password, hierarchy from users where document = ?`,
+      [document],
       (error, results, fields) => {
         if (error) {
           return callback(error);
@@ -71,8 +76,8 @@ module.exports = {
   },
   updateUser: (data, callback) => {
     pool.query(
-      `update user_login set user=?, password=?, hierarchy=? where id_user=?`,
-      [data.user, data.password, data.hierarchy, data.id_user],
+      `update users set user=?, password=?, hierarchy=? where document=?`,
+      [data.user, data.password, data.hierarchy, data.document],
       (error, results, fields) => {
         if (error) {
           return callback(error);
@@ -81,11 +86,12 @@ module.exports = {
       }
     );
   },
-  deleteUser: (data, callback) => { 
-    console.log(data.id_user);
+  deleteUser: (data, callback) => {
+    console.log(data.document);
+
     pool.query(
-      `delete from user_login where id_user = ?`,
-      [data.id_user],
+      `delete from users where document = ?`,
+      [data.document],
       (error, results, fields) => {
         if (error) {
           return callback(error);

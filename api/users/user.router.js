@@ -1,6 +1,6 @@
 const {
   createUser,
-  getUsersByUserId,
+  getUsersByUserDocument,
   getUsers,
   deleteUser,
   updateUser,
@@ -11,7 +11,7 @@ const { checkToken } = require("../../auth/token_validation");
 
 router.post("/", createUser);
 router.get("/", checkToken, getUsers);
-router.get("/:id_user", checkToken, getUsersByUserId);
+router.get("/:document", checkToken, getUsersByUserDocument);
 router.patch("/", checkToken, updateUser);
 router.delete("/", checkToken, deleteUser);
 router.post("/login", login);
