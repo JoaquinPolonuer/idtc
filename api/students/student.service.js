@@ -28,7 +28,7 @@ module.exports = {
     getStudentByStudentId: (id, callback) => {
       console.log(id)
       pool.query(
-        `select * from students where id_student = ?`,
+        `select * from students where users_document = ?`,
         [id],
         (error, results, fields) => {
           if (error) {
@@ -42,7 +42,7 @@ module.exports = {
       console.log(data)
       pool.query(
         
-        `update students set first_name=?, last_name=?, document=?, profile_photo=? where id_student=?`,
+        `update students set first_name=?, last_name=?, profile_photo=? where users_document=?`,
         [data.first_name, data.last_name, data.document, data.profile_photo , data.id_student],
         (error, results, fields) => {
           if (error) {

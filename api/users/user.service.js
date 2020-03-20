@@ -7,11 +7,11 @@ module.exports = {
     let flag = true;
     switch(data.hierarchy){
       case "student":
-        sentence = "insert into students(first_name, last_name, document, profile_photo) values(?,?,?,?)";
-        values = [data.first_name, data.last_name, data.document, data.profile_photo];
+        sentence = "insert into students(first_name, last_name, profile_photo) values(?,?,?)";
+        values = [data.first_name, data.last_name, data.profile_photo];
         break;
       case "teacher" == data.hierarchy:
-        sentence = "insert into teachers(first_name, last_name, document, profile_photo) values(?,?,?,?)";
+        sentence = "insert into teachers(first_name, last_name, profile_photo) values(?,?,?)";
         break;
       default:
         console.log("Hierarchy does not match tables")
@@ -19,7 +19,7 @@ module.exports = {
       }
       if(flag){
         pool.query(
-          "insert into user_login(user, password, hierarchy) values(?,?,?)",
+          "insert into users (user, password, hierarchy) values(?,?,?)",
           [data.user, data.password, data.hierarchy],
           (error, results, fields) => {
             if (error) {
@@ -96,7 +96,7 @@ module.exports = {
   },
   getUserByUserEmail: (user, callback) => {
     pool.query(
-      `select * from user_login where user = ?`,
+      `select * from users where user = ?`,
       [user],
       (error, results, fields) => {
         if (error) {
