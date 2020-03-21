@@ -115,9 +115,14 @@ module.exports = {
       const result = compareSync(body.password, results.password);
       if (result) {
         results.password = undefined;
-        const jsontoken = sign({ result: results }, process.env.JSONTOKEN_KEY, {
-          expiresIn: "1h"
-        });
+        results.hierarchy = undefined;
+        const jsontoken = sign(
+          { sub: results.document },
+          process.env.JSONTOKEN_KEY,
+          {
+            expiresIn: "1h"
+          }
+        );
         return res.json({
           success: 1,
           message: "login successsfully",
