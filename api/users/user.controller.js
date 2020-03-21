@@ -100,22 +100,34 @@ module.exports = {
     });
   },
   login: (req, res) => {
-    const body = req.body;
-    getUserByUserEmail(body.user, (err, results) => {
+    if (
+      !req.headers.authorization ||
+      req.headers.authorization.indexOf("Basic ") === -1
+    ) {
+      return res.status(403).json({ message: "Missing Authorization Header" });
+    }
+
+    const base64Credentials = req.headers.authorization.split(" ")[1];
+    const credentials = Buffer.from(base64Credentials, "base64").toString(
+      "ascii"
+    );
+    const [username, password] = credentials.split(":");
+
+    getUserByUserEmail(username, (err, results) => {
       if (err) {
         console.log(err);
         return;
       }
       if (!results) {
-        return res.json({
+        return res.status(401).json({
           success: 0,
           data: "invalid email or password"
         });
       }
-      const result = compareSync(body.password, results.password);
+      const result = compareSync(password, results.password);
       if (result) {
         results.password = undefined;
-        results.hierarchy = undefined;
+
         const jsontoken = sign(
           { sub: results.document },
           process.env.JSONTOKEN_KEY,

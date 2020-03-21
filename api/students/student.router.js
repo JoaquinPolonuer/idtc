@@ -11,7 +11,6 @@ const { checkToken } = require("../../auth/token_validation");
 
 //router.post("/", checkToken, createStudent);
 router.get("/", checkToken, getStudents);
-
 router.patch("/", checkToken, updateStudent);
 router.delete("/", checkToken, deleteStudent);
 router.post("/document", checkToken, getStudentByStudentDocument);
