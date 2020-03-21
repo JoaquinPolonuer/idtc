@@ -15,7 +15,7 @@ module.exports = {
     },
     getClasses: callback => {
       pool.query(
-        `select * from Class`,
+        `select * from class`,
         [],
         (error, results, fields) => {
           if (error) {

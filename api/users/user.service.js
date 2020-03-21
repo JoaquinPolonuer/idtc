@@ -8,7 +8,7 @@ module.exports = {
     switch (data.hierarchy) {
       case "student":
         sentence =
-          "insert into students(first_name, last_name, profile_photo, users_document) values(?,?,?, ?)";
+          "insert into students(first_name, last_name, profile_photo, users_document) values(?,?,?,?)";
         values = [
           data.first_name,
           data.last_name,
@@ -18,7 +18,7 @@ module.exports = {
         break;
       case "teacher" == data.hierarchy:
         sentence =
-          "insert into teachers(first_name, last_name, profile_photo, users_document) values(?,?,?, ?)";
+          "insert into teachers(first_name, last_name, profile_photo, users_document) values(?,?,?,?)";
         values = [
           data.first_name,
           data.last_name,
