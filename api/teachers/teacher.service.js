@@ -13,8 +13,8 @@ module.exports = {
   //     }
   //   );
   // },
-  getStudents: callback => {
-    pool.query(`select * from students`, [], (error, results, fields) => {
+  getTeachers: callback => {
+    pool.query(`select * from teachers`, [], (error, results, fields) => {
       if (error) {
         return callback(error);
       }
@@ -34,10 +34,10 @@ module.exports = {
   //     }
   //   );
   // },
-  updateStudent: (data, callback) => {
+  updateTeacher: (data, callback) => {
     console.log(data);
     pool.query(
-      `update students set first_name=?, last_name=?, profile_photo=? where users_document=?`,
+      `update teachers set first_name=?, last_name=?, profile_photo=? where users_document=?`,
       [
         data.first_name,
         data.last_name,
@@ -52,10 +52,10 @@ module.exports = {
       }
     );
   },
-  deleteStudent: (data, callback) => {
+  deleteTeacher: (data, callback) => {
     console.log(data.users_document);
     pool.query(
-      `delete from students where users_document = ?`,
+      `delete from teachers where users_document = ?`,
       [data.users_document],
       (error, results, fields) => {
         if (error) {
@@ -65,9 +65,9 @@ module.exports = {
       }
     );
   },
-  getStudentByStudentDocument: (document, callback) => {
+  getTeacherByTeacherDocument: (document, callback) => {
     pool.query(
-      `select * from students where users_document = ?`,
+      `select * from teachers where users_document = ?`,
       [document],
       (error, results, fields) => {
         if (error) {
