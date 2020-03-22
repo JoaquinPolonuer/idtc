@@ -2,57 +2,28 @@ const pool = require("../../config/database");
 
 module.exports = {
   create: (data, callback) => {
-    let sentence = "";
-    let values = [];
-    let flag = true;
-    switch (data.hierarchy) {
-      case "student":
-        sentence =
-          "insert into students(first_name, last_name, profile_photo, users_document) values(?,?,?,?)";
-        values = [
-          data.first_name,
-          data.last_name,
-          data.profile_photo,
-          data.document
-        ];
-        break;
-      case "teacher" == data.hierarchy:
-        sentence =
-          "insert into teachers(first_name, last_name, profile_photo, users_document) values(?,?,?,?)";
-        values = [
-          data.first_name,
-          data.last_name,
-          data.profile_photo,
-          data.document
-        ];
-        break;
-      default:
-        console.log("Hierarchy does not match tables");
-        flag = false;
-    }
-    if (flag) {
-      pool.query(
-        "insert into users (user, password, hierarchy, document) values(?,?,?,?)",
-        [data.user, data.password, data.hierarchy, data.document],
-        (error, results, fields) => {
-          if (error) {
-            return callback(error);
-          }
-          //return callback(null, results);
-        }
-      );
-
-      pool.query(sentence, values, (error, results, fields) => {
+    pool.query(
+      "insert into users (user, password, hierarchy_id_hierarchy, document, first_name, last_name, profile_photo) values(?,?,?,?,?,?,?)",
+      [
+        data.user,
+        data.password,
+        data.hierarchy,
+        data.document,
+        data.first_name,
+        data.last_name,
+        data.profile_photo
+      ],
+      (error, results, fields) => {
         if (error) {
           return callback(error);
         }
         return callback(null, results);
-      });
-    }
+      }
+    );
   },
   getUsers: callback => {
     pool.query(
-      `select document, user, password, hierarchy from users`,
+      `select id_user,user, password, hierarchy_id_hierarchy, document, first_name, last_name, profile_photo from users`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -64,7 +35,7 @@ module.exports = {
   },
   getUsersByUserDocument: (document, callback) => {
     pool.query(
-      `select document, user, password, hierarchy from users where document = ?`,
+      `select user, password, hierarchy_id_hierarchy, document, first_name, last_name, profile_photo from users where document = ?`,
       [document],
       (error, results, fields) => {
         if (error) {
@@ -76,8 +47,17 @@ module.exports = {
   },
   updateUser: (data, callback) => {
     pool.query(
-      `update users set user=?, password=?, hierarchy=? where document=?`,
-      [data.user, data.password, data.hierarchy, data.document],
+      `update users set user=?, password=?, hierarchy_id_hierarchy=?, document=?, first_name=?, last_name=?, profile_photo=? where id_user=?`,
+      [
+        data.user,
+        data.password,
+        data.hierarchy,
+        data.document,
+        data.first_name,
+        data.last_name,
+        data.profile_photo,
+        data.id_user
+      ],
       (error, results, fields) => {
         if (error) {
           return callback(error);
@@ -90,8 +70,8 @@ module.exports = {
     console.log(data.document);
 
     pool.query(
-      `delete from users where document = ?`,
-      [data.document],
+      `delete from users where id_user = ?`,
+      [data.id_user],
       (error, results, fields) => {
         if (error) {
           return callback(error);

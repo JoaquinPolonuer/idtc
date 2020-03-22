@@ -130,6 +130,7 @@ module.exports = {
 
         const jsontoken = sign(
           { sub: results.document },
+
           process.env.JSONTOKEN_KEY,
           {
             expiresIn: "1h"
