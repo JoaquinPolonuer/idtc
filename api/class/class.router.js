@@ -14,5 +14,5 @@ router.get("/", checkToken, getClasses);
 router.get("/:id_class", checkToken, getClassByClassId);
 router.patch("/", checkToken, updateClass);
 router.delete("/", checkToken, deleteClass);
-router.get("/", checkToken, getClassByClassDivision);
+router.post("/division", checkToken, getClassByClassDivision);
 module.exports = router;

@@ -1,6 +1,7 @@
 const {
   createUser,
   getUsersByUserDocument,
+  getUserByUserId,
   getUsers,
   deleteUser,
   updateUser,
@@ -10,7 +11,8 @@ const {
 const router = require("express").Router();
 const { checkToken } = require("../../auth/token_validation");
 
-router.post("/register", createUser);
+router.post("/register", checkToken, createUser);
+router.post("/id", checkToken, getUserByUserId);
 router.get("/", checkToken, getUsers);
 router.get("/:document", checkToken, getUsersByUserDocument);
 router.patch("/", checkToken, updateUser);

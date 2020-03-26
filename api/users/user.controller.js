@@ -5,6 +5,7 @@ const {
   deleteUser,
   updateUser,
   getUserByUserEmail,
+  getUserByUserId,
   getClassUser
 } = require("./user.service");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
@@ -31,6 +32,25 @@ module.exports = {
   getUsersByUserDocument: (req, res) => {
     const document = req.params.document;
     getUsersByUserDocument(document, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "record not found"
+        });
+      }
+      return res.json({
+        success: 1,
+        data: results
+      });
+    });
+  },
+  getUserByUserId: (req, res) => {
+    const body = req.body;
+    getUserByUserId(body.id_user, (err, results) => {
       if (err) {
         console.log(err);
         return;

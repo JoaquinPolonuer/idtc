@@ -92,6 +92,18 @@ module.exports = {
       }
     );
   },
+  getUserByUserId: (id_user, callback) => {
+    pool.query(
+      `select * from users where id_user = ?`,
+      [id_user],
+      (error, results, fields) => {
+        if (error) {
+          return callback(error);
+        }
+        return callback(null, results[0]);
+      }
+    );
+  },
   getClassUser: (id_user, callback) => {
     pool.query(
       `SELECT u2.id_user, u2.document, u2.first_name, c2.id_class, c2.year, c2.division 
