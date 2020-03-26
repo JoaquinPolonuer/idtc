@@ -108,17 +108,8 @@ module.exports = {
     pool.query(
       `SELECT u2.id_user, u2.document, u2.first_name, c2.id_class, c2.year, c2.division 
       FROM studentclass s
-      LEFT OUTER JOIN users u2 ON s.id_user = u2.id_user
-      LEFT OUTER JOIN class c2 ON s.id_class = c2.id_class`,[],
-      (error, results, fields) => {
-        if (error) {
-          return callback(error);
-        }
-        return callback(null, results);
-      }
-    );
-    pool.query(
-      `SELECT * FROM studentclass WHERE id_user = ?`,[id_user],
+      LEFT OUTER JOIN users u2 ON s.id_user = u2.id_user 
+      LEFT OUTER JOIN class c2 ON s.id_class = c2.id_class WHERE u2.id_user = ?`,[id_user],
       (error, results, fields) => {
         if (error) {
           return callback(error);
